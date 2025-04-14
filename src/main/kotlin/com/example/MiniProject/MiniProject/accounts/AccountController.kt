@@ -43,7 +43,7 @@ class AccountController(
     }
 
     @GetMapping("accounts/v1/accounts")
-    fun listAcounts(): Map<String, List<AccountDTO>> {
+    fun listAccounts(): Map<String, List<AccountDTO>> {
         val accounts = accountRepository.findAll().map {
             AccountDTO(it.id, it.accountNumber, it.balance, it.is_active)
         }

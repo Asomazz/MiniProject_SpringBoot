@@ -19,15 +19,15 @@ data class KycEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    val date_of_birth: LocalDate,
+    var date_of_birth: LocalDate,
 
-    val nationality: String,
+    var nationality: String,
 
-    val salary: Float,
+    var salary: Float,
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    val user: UserEntity,
+    @JoinColumn(name = "user_id", unique = true)
+    var user: UserEntity,
 
     ){
     constructor() : this(null, LocalDate.now(), "", 0.0f, UserEntity())

@@ -19,20 +19,24 @@ class KycController(
     @PostMapping("/users/v1/kyc")
     fun createProfile(@RequestBody request: ProfileRequest): ProfileRequest {
         var user = userRepository.findById(request.user_id).orElseThrow();
-        var newProfile = KycEntity(
-            user = user,
-            date_of_birth = request.date_of_birth,
-            nationality = request.nationality,
-            salary = request.salary.toFloat()
-        )
-        kycRepository.save(newProfile)
+        var existingKyc = kycRepository.findByUserId(request.user_id)
 
-        return ProfileRequest(
-            user_id = newProfile.user.id!!,
-            date_of_birth = newProfile.date_of_birth,
-            nationality = newProfile.nationality,
-            salary = BigDecimal.valueOf(newProfile.salary.toDouble())
-        )
+        if (existingKyc != null) {
+            existingKyc.date_of_birth = request.date_of_birth
+            existingKyc.nationality = request.nationality
+            existingKyc.salary = request.salary.toFloat()
+            kycRepository.save(existingKyc)
+        } else {
+            var newKyc = KycEntity(
+                user = user,
+                date_of_birth = request.date_of_birth,
+                nationality = request.nationality,
+                salary = request.salary.toFloat()
+            )
+            kycRepository.save(newKyc)
+        }
+
+        return request
     }
 
     @GetMapping("/users/v1/kyc/{userId}")
@@ -50,9 +54,9 @@ class KycController(
 
 data class ProfileRequest(
     var user_id: Long,
-    val date_of_birth: LocalDate,
-    val nationality: String,
-    val salary: BigDecimal
+    var date_of_birth: LocalDate,
+    var nationality: String,
+    var salary: BigDecimal
 )
 
 data class KycResponse(
