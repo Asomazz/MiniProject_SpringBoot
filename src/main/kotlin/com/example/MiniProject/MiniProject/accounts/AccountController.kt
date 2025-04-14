@@ -29,6 +29,14 @@ class AccountController(
         accountRepository.save(account)
     }
 
+    @GetMapping("accounts/v1/accounts")
+    fun listAcounts(): Map<String, List<AccountDTO>> {
+        val accounts = accountRepository.findAll().map {
+            AccountDTO(it.id, it.account_number, it.balance, it.is_active)
+        }
+        return mapOf("accounts" to accounts)
+    }
+
 }
 
 data class AccountRequest(
@@ -38,21 +46,11 @@ data class AccountRequest(
     var is_active: Boolean
 )
 
+data class AccountDTO(
+    val id: Long?,
+    val account_number: String,
+    val balance: Float,
+    val is_active: Boolean
+)
 
-//@PostMapping("/account")
-//fun createAccount(@RequestBody request: AccountRequest): ResponseEntity<String> {
-//    return try {
-//        val user = userRepository.findById(request.user_id).orElseThrow()
-//        val newAccount = AccountEntity(
-//            user = user,
-//            balance = request.balance,
-//            is_active = request.is_active,
-//            account_number = request.account_number
-//        )
-//        accountRepository.save(newAccount)
-//        ResponseEntity.ok("Account created successfully")
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//        ResponseEntity.status(500).body("Server error: ${e.message}")
-//    }
-//}
+

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     val userRepository: UserRepository,
 ) {
-    @PostMapping("/register")
+    @PostMapping("/users/v1/register")
     fun register(@RequestBody request: UserRequest) {
         val newUser = UserEntity(
             username = request.username,
