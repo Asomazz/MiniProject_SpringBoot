@@ -1,10 +1,7 @@
 package com.example.MiniProject.MiniProject.accounts
 
 import com.example.MiniProject.MiniProject.users.UserRepository
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -24,6 +21,14 @@ class AccountController(
         )
         accountRepository.save(newAccount)
     }
+
+    @PutMapping("/account/{id}/close")
+    fun closeAccount(@PathVariable id: Long) {
+        val account = accountRepository.findById(id).orElseThrow()
+        account.is_active = false
+        accountRepository.save(account)
+    }
+
 }
 
 data class AccountRequest(
