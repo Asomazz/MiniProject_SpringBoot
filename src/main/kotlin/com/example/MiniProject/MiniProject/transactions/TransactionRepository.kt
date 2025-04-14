@@ -18,16 +18,14 @@ data class TransactionEntity(
     var id: Long? = null,
 
     @ManyToOne
-    @JoinColumn(name= "account_id")
+    @JoinColumn(name= "source_account_id")
     val source_account: AccountEntity,
 
     @ManyToOne
-    @JoinColumn(name= "account_id")
+    @JoinColumn(name= "destination_account_id")
     val destination_account: AccountEntity,
 
-
     val amount: Float,
-
 
     ){
     constructor() : this(null, AccountEntity(), AccountEntity(), 0.0f)

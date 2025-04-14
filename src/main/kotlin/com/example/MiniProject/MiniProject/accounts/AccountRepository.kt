@@ -14,23 +14,27 @@ interface AccountRepository : JpaRepository<AccountEntity, Long>{
 @Entity
 @Table(name = "accounts")
 data class AccountEntity(
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @ManyToOne
     @JoinColumn(name= "user_id")
-    val user: UserEntity,
+    var user: UserEntity,
 
-    val balance: Float,
+    var balance: Float = 0.0f,
 
-    val is_active: Boolean,
+    var is_active: Boolean = true,
 
-    val account_number: Int,
+    var account_number: String,
 
-    @OneToMany(mappedBy = "account", cascade = [CascadeType.ALL])
-    var transactions: List<TransactionEntity> = listOf()
+    @OneToMany(mappedBy = "source_account", cascade = [CascadeType.ALL])
+    var sentTransactions: List<TransactionEntity> = listOf(),
+
+    @OneToMany(mappedBy = "destination_account", cascade = [CascadeType.ALL])
+    var receivedTransactions: List<TransactionEntity> = listOf()
 
 ){
-    constructor() : this(null, UserEntity(), 0.0f,true, 0, listOf())
+    constructor() : this(null, UserEntity(),0.0f,true, "", listOf(), listOf())
 }
