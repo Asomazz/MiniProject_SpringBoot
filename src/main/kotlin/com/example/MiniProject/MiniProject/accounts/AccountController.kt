@@ -10,21 +10,22 @@ class AccountController(
     val userRepository: UserRepository,
 ) {
 
-    @PostMapping("/account")
+    @PostMapping("/accounts/v1/accounts")
     fun createAccount(@RequestBody request: AccountRequest) {
         var user = userRepository.findById(request.user_id).orElseThrow();
         val newAccount = AccountEntity(
             user = user,
             balance = request.balance,
             is_active = request.is_active,
-            account_number = request.account_number
+            accountNumber = request.accountNumber
         )
         accountRepository.save(newAccount)
     }
 
-    @PutMapping("/account/{id}/close")
-    fun closeAccount(@PathVariable id: Long) {
-        val account = accountRepository.findById(id).orElseThrow()
+    @PostMapping("/accounts/v1/accounts/{accountNumber}/close")
+    fun closeAccount(@PathVariable accountNumber: String) {
+        val account = accountRepository.findByAccountNumber(accountNumber)
+            ?: throw IllegalArgumentException("Account not found")
         account.is_active = false
         accountRepository.save(account)
     }
@@ -32,7 +33,7 @@ class AccountController(
     @GetMapping("accounts/v1/accounts")
     fun listAcounts(): Map<String, List<AccountDTO>> {
         val accounts = accountRepository.findAll().map {
-            AccountDTO(it.id, it.account_number, it.balance, it.is_active)
+            AccountDTO(it.id, it.accountNumber, it.balance, it.is_active)
         }
         return mapOf("accounts" to accounts)
     }
@@ -41,14 +42,14 @@ class AccountController(
 
 data class AccountRequest(
     var user_id: Long,
-    var account_number: String,
+    var accountNumber: String,
     var balance: Float,
     var is_active: Boolean
 )
 
 data class AccountDTO(
     val id: Long?,
-    val account_number: String,
+    val accountNumber: String,
     val balance: Float,
     val is_active: Boolean
 )

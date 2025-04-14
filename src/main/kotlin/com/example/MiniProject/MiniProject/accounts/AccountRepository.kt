@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface AccountRepository : JpaRepository<AccountEntity, Long>{
-
+    fun findByAccountNumber(accountNumber: String): AccountEntity?
 }
 
 @Entity
@@ -27,7 +27,8 @@ data class AccountEntity(
 
     var is_active: Boolean = true,
 
-    var account_number: String,
+    @Column(name = "account_number")
+    var accountNumber: String,
 
     @OneToMany(mappedBy = "source_account", cascade = [CascadeType.ALL])
     var sentTransactions: List<TransactionEntity> = listOf(),
