@@ -2,6 +2,7 @@ package com.example.MiniProject.MiniProject.accounts
 
 import com.example.MiniProject.MiniProject.users.UserRepository
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 
 
 @RestController
@@ -11,15 +12,26 @@ class AccountController(
 ) {
 
     @PostMapping("/accounts/v1/accounts")
-    fun createAccount(@RequestBody request: AccountRequest) {
-        var user = userRepository.findById(request.user_id).orElseThrow();
+    fun createAccount(@RequestBody request: AccountRequest): AccountResponse {
+        var user = userRepository.findById(request.userId).orElseThrow {
+            IllegalArgumentException("User with ID ${request.userId} not found")
+        }
         val newAccount = AccountEntity(
             user = user,
-            balance = request.balance,
-            is_active = request.is_active,
-            accountNumber = request.accountNumber
+            accountNumber = generateAccountNumber(),
+            balance = request.initialBalance.toFloat(),
         )
         accountRepository.save(newAccount)
+
+        return AccountResponse(
+            userId = user.id!!,
+            accountNumber = newAccount.accountNumber,
+            initialBalance = request.initialBalance
+        )
+    }
+
+    private fun generateAccountNumber(): String {
+        return (1000000000L..9999999999L).random().toString()
     }
 
     @PostMapping("/accounts/v1/accounts/{accountNumber}/close")
@@ -37,14 +49,18 @@ class AccountController(
         }
         return mapOf("accounts" to accounts)
     }
-
 }
 
 data class AccountRequest(
-    var user_id: Long,
+    var userId: Long,
     var accountNumber: String,
-    var balance: Float,
-    var is_active: Boolean
+    var initialBalance: BigDecimal,
+)
+
+data class AccountResponse(
+    var userId: Long,
+    var accountNumber: String,
+    var initialBalance: BigDecimal
 )
 
 data class AccountDTO(
