@@ -18,7 +18,7 @@ class AccountService(
         val newAccount = AccountEntity(
             user = user,
             accountNumber = generateAccountNumber(),
-            balance = request.initialBalance.toFloat(),
+            balance = request.initialBalance
         )
 
         accountRepository.save(newAccount)

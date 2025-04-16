@@ -3,6 +3,7 @@ package com.example.MiniProject.MiniProject.accounts
 import com.example.MiniProject.MiniProject.transactions.TransactionEntity
 import com.example.MiniProject.MiniProject.users.UserEntity
 import jakarta.persistence.*
+import java.math.BigDecimal
 
 
 @Entity
@@ -17,7 +18,7 @@ data class AccountEntity(
     @JoinColumn(name= "user_id")
     var user: UserEntity,
 
-    var balance: Float = 0.0f,
+    var balance: BigDecimal = BigDecimal.ZERO,
 
     var is_active: Boolean = true,
 
@@ -31,5 +32,5 @@ data class AccountEntity(
     var receivedTransactions: List<TransactionEntity> = listOf()
 
 ){
-    constructor() : this(null, UserEntity(),0.0f,true, "", listOf(), listOf())
+    constructor() : this(null, UserEntity(), BigDecimal.ZERO,true, "", listOf(), listOf())
 }

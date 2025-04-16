@@ -2,6 +2,7 @@ package com.example.MiniProject.MiniProject.transactions
 
 import com.example.MiniProject.MiniProject.accounts.AccountEntity
 import jakarta.persistence.*
+import java.math.BigDecimal
 
 @Entity
 @Table(name = "transactions")
@@ -18,8 +19,8 @@ data class TransactionEntity(
     @JoinColumn(name= "destination_account_id")
     val destination_account: AccountEntity,
 
-    val amount: Float,
+    val amount: BigDecimal = BigDecimal.ZERO,
 
     ){
-    constructor() : this(null, AccountEntity(), AccountEntity(), 0.0f)
+    constructor() : this(null, AccountEntity(), AccountEntity(), BigDecimal.ZERO)
 }

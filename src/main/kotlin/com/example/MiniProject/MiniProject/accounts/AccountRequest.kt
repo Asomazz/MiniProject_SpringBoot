@@ -17,6 +17,6 @@ data class AccountResponse(
 data class AccountDTO(
     val id: Long?,
     val accountNumber: String,
-    val balance: Float,
+    val balance: BigDecimal,
     val is_active: Boolean
 )

@@ -17,12 +17,12 @@ class TransactionService(
         val destination_account = accountRepository.findByAccountNumber(request.destinationAccountNumber)
             ?: throw IllegalArgumentException("Destination account not found")
 
-        if (source_account.balance < request.amount.toFloat()) {
+        if (source_account.balance < request.amount) {
             throw IllegalArgumentException("Insufficient funds") //validation point 4
         }
 
-        source_account.balance -= request.amount.toFloat()
-        destination_account.balance += request.amount.toFloat()
+        source_account.balance -= request.amount
+        destination_account.balance += request.amount
 
         accountRepository.save(source_account)
         accountRepository.save(destination_account)
@@ -30,10 +30,10 @@ class TransactionService(
         val newTransaction = TransactionEntity(
             source_account = source_account,
             destination_account = destination_account,
-            amount = request.amount.toFloat()
+            amount = request.amount
         )
         transactionRepository.save(newTransaction)
 
-        return mapOf("newBalance" to source_account.balance.toBigDecimal())
+        return mapOf("newBalance" to source_account.balance)
     }
 }
