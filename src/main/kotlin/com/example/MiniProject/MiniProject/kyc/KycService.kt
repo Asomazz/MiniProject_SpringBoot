@@ -3,7 +3,6 @@ package com.example.MiniProject.MiniProject.kyc
 
 import com.example.MiniProject.MiniProject.users.UserRepository
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 
 @Service
 class KycService(
@@ -11,18 +10,18 @@ class KycService(
     private val userRepository: UserRepository
 ) {
     fun createProfile(request: ProfileRequest): ProfileRequest {
-        var user = userRepository.findById(request.user_id).orElseThrow();
-        var existingKyc = kycRepository.findByUserId(request.user_id)
+        var user = userRepository.findById(request.userId).orElseThrow();
+        var existingKyc = kycRepository.findByUserId(request.userId)
 
         if (existingKyc != null) {
-            existingKyc.date_of_birth = request.date_of_birth
+            existingKyc.dateOfBirth = request.dateOfBirth
             existingKyc.nationality = request.nationality
             existingKyc.salary = request.salary.toFloat()
             kycRepository.save(existingKyc)
         } else {
             var newKyc = KycEntity(
                 user = user,
-                date_of_birth = request.date_of_birth,
+                dateOfBirth = request.dateOfBirth,
                 nationality = request.nationality,
                 salary = request.salary.toFloat()
             )
@@ -38,7 +37,7 @@ class KycService(
 
         return KycResponse(
             userId = kyc.user.id!!,
-            date_of_birth = kyc.date_of_birth
+            dateOfBirth = kyc.dateOfBirth
         )
     }
 }

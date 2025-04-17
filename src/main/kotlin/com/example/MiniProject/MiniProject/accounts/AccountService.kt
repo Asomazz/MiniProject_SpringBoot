@@ -2,7 +2,6 @@ package com.example.MiniProject.MiniProject.accounts
 
 import com.example.MiniProject.MiniProject.users.UserRepository
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 
 @Service
 class AccountService(
@@ -34,13 +33,13 @@ class AccountService(
         val account = accountRepository.findByAccountNumber(accountNumber)
             ?: throw IllegalArgumentException("Account not found")
 
-        account.is_active = false
+        account.isActive = false
         accountRepository.save(account)
     }
 
     fun listAccounts(): Map<String, List<AccountDTO>> {
         val accounts = accountRepository.findAll().map {
-            AccountDTO(it.id, it.accountNumber, it.balance, it.is_active)
+            AccountDTO(it.id, it.accountNumber, it.balance, it.isActive)
         }
         return mapOf("accounts" to accounts)
     }

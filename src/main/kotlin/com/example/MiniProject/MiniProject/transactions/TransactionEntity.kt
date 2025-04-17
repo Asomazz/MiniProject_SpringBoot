@@ -13,11 +13,11 @@ data class TransactionEntity(
 
     @ManyToOne
     @JoinColumn(name= "source_account_id")
-    val source_account: AccountEntity,
+    val sourceAccount: AccountEntity,
 
     @ManyToOne
     @JoinColumn(name= "destination_account_id")
-    val destination_account: AccountEntity,
+    val destinationAccount: AccountEntity,
 
     val amount: BigDecimal = BigDecimal.ZERO,
 

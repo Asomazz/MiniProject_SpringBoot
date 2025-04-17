@@ -12,7 +12,7 @@ data class KycEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    var date_of_birth: LocalDate,
+    var dateOfBirth: LocalDate,
 
     var nationality: String,
 

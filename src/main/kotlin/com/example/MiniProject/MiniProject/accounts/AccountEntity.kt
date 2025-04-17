@@ -20,15 +20,15 @@ data class AccountEntity(
 
     var balance: BigDecimal = BigDecimal.ZERO,
 
-    var is_active: Boolean = true,
+    var isActive: Boolean = true,
 
     @Column(name = "account_number")
     var accountNumber: String,
 
-    @OneToMany(mappedBy = "source_account", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "sourceAccount", cascade = [CascadeType.ALL])
     var sentTransactions: List<TransactionEntity> = listOf(),
 
-    @OneToMany(mappedBy = "destination_account", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "destinationAccount", cascade = [CascadeType.ALL])
     var receivedTransactions: List<TransactionEntity> = listOf()
 
 ){

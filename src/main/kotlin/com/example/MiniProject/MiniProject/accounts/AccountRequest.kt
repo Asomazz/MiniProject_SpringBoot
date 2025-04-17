@@ -18,5 +18,5 @@ data class AccountDTO(
     val id: Long?,
     val accountNumber: String,
     val balance: BigDecimal,
-    val is_active: Boolean
+    val isActive: Boolean
 )
