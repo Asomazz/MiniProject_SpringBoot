@@ -10,7 +10,9 @@ class KycService(
     private val userRepository: UserRepository
 ) {
     fun createProfile(request: ProfileRequest): ProfileRequest {
-        var user = userRepository.findById(request.userId).orElseThrow();
+        var user = userRepository.findById(request.userId).orElseThrow {
+            IllegalArgumentException("User with ID ${request.userId} not found")
+        }
         var existingKyc = kycRepository.findByUserId(request.userId)
 
         if (existingKyc != null) {

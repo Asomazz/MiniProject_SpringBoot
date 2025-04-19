@@ -31,7 +31,11 @@ class AccountService(
 
     fun closeAccount(accountNumber: String) {
         val account = accountRepository.findByAccountNumber(accountNumber)
-            ?: throw IllegalArgumentException("Account not found")
+            ?: throw NoSuchElementException("Account not found")
+
+        if (!account.isActive) {
+            throw IllegalStateException("Account is already closed!")
+        }
 
         account.isActive = false
         accountRepository.save(account)
