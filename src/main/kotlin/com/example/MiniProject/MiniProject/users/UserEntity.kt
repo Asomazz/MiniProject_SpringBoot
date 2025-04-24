@@ -21,6 +21,13 @@ data class UserEntity(
 
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     val kyc: KycEntity? = null,
+
+    @Enumerated(EnumType.STRING)
+    val role: Roles = Roles.USER
 ) {
-    constructor() : this(null, "", "", listOf(), null)
+    constructor() : this(null, "", "", listOf(), null, Roles.USER)
+}
+
+enum class Roles {
+    USER, ADMIN
 }
