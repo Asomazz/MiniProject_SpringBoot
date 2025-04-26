@@ -28,6 +28,7 @@ class SecurityConfig(
         http.csrf { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .sessionManagement {
