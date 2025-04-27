@@ -19,6 +19,7 @@ class JwtService {
 
         return Jwts.builder()
             .setSubject(username)
+//            .claim()
             .setIssuedAt(now)
             .setExpiration(expiry)
             .signWith(secretKey)
